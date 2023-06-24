@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/half_vertical_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="horizontal"/>
+
+    <com.mnisred.activityintentflagsdemo.view.StackContentView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/half_vertical_guideline"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/launch_standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Standard"
+        app:layout_constraintBottom_toTopOf="@id/launch_single_task"
+        app:layout_constraintEnd_toStartOf="@id/launch_single_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/half_vertical_guideline" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/launch_single_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SingleTop"
+        app:layout_constraintBottom_toTopOf="@id/launch_single_task"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/launch_standard"
+        app:layout_constraintTop_toBottomOf="@id/half_vertical_guideline" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/launch_single_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SingleTask"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/launch_standard"
+        app:layout_constraintTop_toBottomOf="@id/launch_standard" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/launch_single_instance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SingleInstance"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/launch_single_top"
+        app:layout_constraintTop_toBottomOf="@id/launch_standard"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
