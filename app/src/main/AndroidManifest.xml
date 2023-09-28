@@ -27,6 +27,14 @@
             android:launchMode="singleTop"/>
         <activity android:name="com.mnisred.activityintentflagsdemo.activity.StandardActivity"
             android:launchMode="standard"/>
+
+        <receiver android:name="com.mnisred.activityintentflagsdemo.receiver.StartActivityReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mnisred.activityintentflagsdemo.START_ACTIVITY"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

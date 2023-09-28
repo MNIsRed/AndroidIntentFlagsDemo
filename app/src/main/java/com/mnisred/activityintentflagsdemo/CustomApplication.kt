@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.SparseArray
+import androidx.core.util.keyIterator
 import com.mnisred.activityintentflagsdemo.event.ActivityDestroyEvent
 import org.greenrobot.eventbus.EventBus
 import java.util.Stack
@@ -78,36 +79,30 @@ class CustomApplication : Application() {
      * 原因在于上一个Activity的resume在销毁activity的destroy之前
      */
     private fun popTask(activity: Activity){
-        findTargetTask(activity){key,task->
-            //map里的key和activity对应上，就是要删除的
-            val targetName = activity::class.simpleName
-            taskMap.get(key)?.let {
-                if (it.isEmpty()) return
-                if (it.peek() == targetName){
-                    it.pop()
-                    if (it.isEmpty()) taskMap.remove(key)
-                    EventBus.getDefault().post(ActivityDestroyEvent())
-                    return@findTargetTask
+        (activity.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.let{ manager->
+            //查找有没有已经销毁的栈
+            taskMap.findKey {
+                !manager.appTasks.map {task-> task.taskInfo.uniqueId }.contains(it)
+            }?.let { uniqeId->
+                taskMap.remove(uniqeId)
+            }?:run {
+                //没有已销毁的栈，说明要在存在的栈里面删除Activity
+                findTargetTask(activity){key,task->
+                    //map里的key和activity对应上，就是要删除的
+                    val targetName = activity::class.simpleName
+                    taskMap.get(key)?.let {
+                        if (it.isEmpty()) return
+                        if (it.peek() == targetName){
+                            it.pop()
+                            if (it.isEmpty()) taskMap.remove(key)
+                            EventBus.getDefault().post(ActivityDestroyEvent())
+                            return@findTargetTask
+                        }
+                    }
                 }
+
             }
         }
-//        (activity.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.let{ manager->
-//            for (task in manager.appTasks) {
-//                //map里的key和activity对应上，就是要删除的
-//                val targetName = activity::class.simpleName
-//                val key = task.taskInfo.uniqueId
-//
-//                taskMap.get(key)?.let {
-//                    if (it.isEmpty()) return
-//                    if (it.peek() == targetName){
-//                        it.pop()
-//                        if (it.isEmpty()) taskMap.remove(key)
-//                        return
-//                    }
-//
-//                }
-//            }
-//        }
     }
 
     companion object{

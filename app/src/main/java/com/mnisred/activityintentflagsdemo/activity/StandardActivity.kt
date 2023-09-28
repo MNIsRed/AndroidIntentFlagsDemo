@@ -26,5 +26,13 @@ class StandardActivity : BaseActivity(){
             val starter = Intent(context,StandardActivity::class.java)
             context.startActivity(starter)
         }
+
+        @JvmStatic
+        fun startNewTask(context: Context){
+            val starter = Intent(context,StandardActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            context.startActivity(starter)
+        }
     }
 }
